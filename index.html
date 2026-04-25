@@ -3,580 +3,671 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portfolio — Systems Engineer & Technical Leader</title>
+  <title>Portfolio — Systems Engineer &amp; Technical Leader</title>
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Google Fonts: Syne (display) + DM Sans (body) -->
+  <!-- ── Google Fonts ── -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 
-  <!-- Vue 3 -->
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-
-  <!-- Motion One -->
-  <script src="https://cdn.jsdelivr.net/npm/motion@10.16.4/dist/motion.js"></script>
-
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            display: ['Syne', 'sans-serif'],
-            body: ['DM Sans', 'sans-serif'],
-          },
-          colors: {
-            'true-black': '#030712',
-          },
-          animation: {
-            'marquee': 'marquee 22s linear infinite',
-            'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
-          },
-          keyframes: {
-            marquee: {
-              '0%': { transform: 'translateX(0%)' },
-              '100%': { transform: 'translateX(-50%)' },
-            },
-            'pulse-glow': {
-              '0%, 100%': { boxShadow: '0 0 8px 2px rgba(99,102,241,0.35)' },
-              '50%': { boxShadow: '0 0 18px 5px rgba(99,102,241,0.6)' },
-            },
-          },
-        },
-      },
-    }
-  </script>
+  <!-- ── Vue 3 via jsDelivr (reliable in sandboxed environments) ── -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@3.4.21/dist/vue.global.prod.js"></script>
 
   <style>
+    /* ══════════════════════════════════════════
+       RESET & TOKENS
+    ══════════════════════════════════════════ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --accent: #6366f1;      /* indigo-500 */
-      --accent-alt: #a78bfa;  /* violet-400 */
-      --glass-bg: rgba(255,255,255,0.04);
-      --glass-border: rgba(255,255,255,0.09);
-      --text-primary: #f1f5f9;
-      --text-muted: #64748b;
+      --accent:        #6366f1;
+      --accent-soft:   rgba(99,102,241,0.13);
+      --accent-border: rgba(99,102,241,0.36);
+      --glass-bg:      rgba(255,255,255,0.04);
+      --glass-border:  rgba(255,255,255,0.09);
+      --surface:       rgba(255,255,255,0.03);
+      --green:         #6ee7b7;
+      --text-hi:       #f1f5f9;
+      --text-mid:      #94a3b8;
+      --text-lo:       #475569;
+      --text-muted:    #64748b;
+      --radius:        1.5rem;
+      --font-d:        'Syne', sans-serif;
+      --font-b:        'DM Sans', sans-serif;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      background-color: #030712;
-      color: var(--text-primary);
-      font-family: 'DM Sans', sans-serif;
+      background: #030712;
+      color: var(--text-hi);
+      font-family: var(--font-b);
+      font-size: 14px;
       min-height: 100vh;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* ─── Spotlight canvas ─── */
+    /* subtle film grain */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.022;
+    }
+
+    /* ── Spotlight ── */
     #spotlight {
       pointer-events: none;
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       z-index: 0;
-      transition: background 0.12s ease;
     }
 
-    /* ─── Glass card ─── */
-    .glass-card {
+    /* ══════════════════════════════════════════
+       PAGE WRAPPER & GRID
+    ══════════════════════════════════════════ */
+    .page-wrap {
+      position: relative; z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1rem 3rem;
+    }
+
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.9rem;
+    }
+
+    .col2 { grid-column: span 2; }
+    .col1 { grid-column: span 1; }
+    .row2 { grid-row: span 2; }
+
+    @media (max-width: 640px) {
+      .bento { grid-template-columns: 1fr; }
+      .col2, .col1 { grid-column: span 1; }
+      .row2 { grid-row: span 1; }
+    }
+    @media (min-width: 641px) and (max-width: 1023px) {
+      .bento { grid-template-columns: repeat(2, 1fr); }
+      .col2 { grid-column: span 2; }
+      .col1 { grid-column: span 1; }
+    }
+
+    /* ══════════════════════════════════════════
+       GLASS CARD
+    ══════════════════════════════════════════ */
+    .card {
       background: var(--glass-bg);
-      backdrop-filter: blur(24px) saturate(160%);
-      -webkit-backdrop-filter: blur(24px) saturate(160%);
+      backdrop-filter: blur(28px) saturate(160%);
+      -webkit-backdrop-filter: blur(28px) saturate(160%);
       border: 1px solid var(--glass-border);
-      border-radius: 1.5rem;
-      transition: border-color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
+      border-radius: var(--radius);
+      padding: 1.6rem;
       position: relative;
       overflow: hidden;
+      transition: border-color 0.45s ease, transform 0.45s ease, box-shadow 0.45s ease;
+      /* cards start invisible; JS animates them in */
+      opacity: 0;
     }
-    .glass-card::before {
+
+    /* inner accent glow tint */
+    .card::before {
       content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 60% 0%, rgba(99,102,241,0.07) 0%, transparent 70%);
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 65% -10%, rgba(99,102,241,0.08) 0%, transparent 65%);
       pointer-events: none;
       border-radius: inherit;
     }
-    .glass-card:hover {
-      border-color: rgba(99,102,241,0.35);
-      box-shadow: 0 0 40px -10px rgba(99,102,241,0.25), 0 8px 32px rgba(0,0,0,0.5);
+
+    .card:hover {
+      border-color: var(--accent-border);
+      box-shadow: 0 0 48px -12px rgba(99,102,241,0.28), 0 10px 40px rgba(0,0,0,0.55);
       transform: translateY(-3px);
     }
 
-    /* ─── Accent pill ─── */
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      background: rgba(99,102,241,0.15);
-      border: 1px solid rgba(99,102,241,0.4);
-      border-radius: 999px;
-      padding: 0.3rem 0.85rem;
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: #a5b4fc;
-      letter-spacing: 0.02em;
-    }
-    .status-dot {
-      width: 7px; height: 7px;
-      background: #6ee7b7;
-      border-radius: 50%;
-      box-shadow: 0 0 6px 2px rgba(110,231,183,0.6);
-      animation: blink 2s ease-in-out infinite;
-    }
-    @keyframes blink {
-      0%,100% { opacity:1; } 50% { opacity:0.4; }
+    /* flex column that fills the card */
+    .ci {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative; z-index: 1;
     }
 
-    /* ─── Glowing skill badge ─── */
-    .skill-badge {
+    /* ══════════════════════════════════════════
+       SHARED PRIMITIVES
+    ══════════════════════════════════════════ */
+    .lbl {
+      font-size: 0.67rem;
+      font-weight: 600;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.28rem 0.72rem;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 500;
+      white-space: nowrap;
+      border: 1px solid var(--accent-border);
+      background: var(--accent-soft);
+      color: #c7d2fe;
+      letter-spacing: 0.01em;
+      transition: all 0.32s ease;
+      cursor: default;
+    }
+    .badge:hover {
+      background: rgba(99,102,241,0.26);
+      border-color: rgba(99,102,241,0.72);
+      box-shadow: 0 0 14px rgba(99,102,241,0.38);
+      color: #e0e7ff;
+    }
+    .badge-sm { font-size: 0.68rem; padding: 0.2rem 0.58rem; }
+    .badge-green {
+      border-color: rgba(110,231,183,0.32);
+      background: rgba(110,231,183,0.08);
+      color: #6ee7b7;
+    }
+
+    /* ── Buttons ── */
+    .btn {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      padding: 0.35rem 0.9rem;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      white-space: nowrap;
-      border: 1px solid rgba(99,102,241,0.35);
-      background: rgba(99,102,241,0.1);
-      color: #c7d2fe;
-      letter-spacing: 0.01em;
-      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 0.68rem;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid;
+      transition: all 0.38s ease;
+      letter-spacing: 0.02em;
+      background: none;
+      font-family: var(--font-b);
     }
-    .skill-badge:hover {
-      background: rgba(99,102,241,0.25);
-      border-color: rgba(99,102,241,0.7);
-      box-shadow: 0 0 14px rgba(99,102,241,0.4);
+    .btn-accent {
+      background: linear-gradient(135deg, rgba(99,102,241,0.28), rgba(167,139,250,0.18));
+      border-color: rgba(99,102,241,0.42);
+      color: #c7d2fe;
+    }
+    .btn-accent:hover {
+      background: linear-gradient(135deg, rgba(99,102,241,0.48), rgba(167,139,250,0.32));
+      border-color: rgba(99,102,241,0.82);
+      box-shadow: 0 0 22px rgba(99,102,241,0.38);
       color: #e0e7ff;
+      transform: translateY(-1px);
+    }
+    .btn-ghost {
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(255,255,255,0.1);
+      color: var(--text-muted);
+    }
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.08);
+      color: var(--text-mid);
     }
 
-    /* ─── Timeline ─── */
-    .timeline-item { position: relative; padding-left: 1.4rem; }
-    .timeline-item::before {
+    /* ══════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════ */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.42rem;
+      background: rgba(99,102,241,0.13);
+      border: 1px solid rgba(99,102,241,0.36);
+      border-radius: 999px;
+      padding: 0.26rem 0.78rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: #a5b4fc;
+      letter-spacing: 0.025em;
+      margin-bottom: 1.2rem;
+    }
+    .pill-dot {
+      width: 7px; height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 7px 2px rgba(110,231,183,0.62);
+      animation: blink 2.2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+    .hero-name {
+      font-family: var(--font-d);
+      font-size: clamp(2rem, 4vw, 3.1rem);
+      font-weight: 800;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #f1f5f9 25%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.45rem;
+    }
+    .hero-sub {
+      font-family: var(--font-d);
+      font-size: 1rem;
+      font-weight: 600;
+      color: #818cf8;
+      letter-spacing: 0.015em;
+      margin-bottom: 0.85rem;
+    }
+    .hero-bio {
+      font-size: 0.82rem;
+      line-height: 1.72;
+      color: var(--text-mid);
+      max-width: 30ch;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.42rem;
+      margin-top: auto;
+      padding-top: 1.1rem;
+    }
+
+    /* ══════════════════════════════════════════
+       PROJECT
+    ══════════════════════════════════════════ */
+    .proj-title {
+      font-family: var(--font-d);
+      font-size: clamp(1.35rem, 2.5vw, 1.8rem);
+      font-weight: 700;
+      color: #e0e7ff;
+      line-height: 1.15;
+      margin-bottom: 0.28rem;
+    }
+    .proj-meta {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.055em;
+      color: var(--accent);
+      margin-bottom: 0.95rem;
+    }
+
+    /* Wireframe cube */
+    .model-box {
+      border-radius: 0.9rem;
+      background: linear-gradient(135deg, rgba(99,102,241,0.09), rgba(167,139,250,0.05));
+      border: 1px solid rgba(99,102,241,0.17);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0.4rem;
+      min-height: 115px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 0.95rem;
+      flex-shrink: 0;
+    }
+    .model-box::before {
       content: '';
-      position: absolute;
-      left: 0; top: 0.55rem;
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        45deg, transparent, transparent 14px,
+        rgba(99,102,241,0.04) 14px, rgba(99,102,241,0.04) 15px
+      );
+    }
+    .cube { position: relative; z-index:1; animation: spin 9s linear infinite; }
+    @keyframes spin {
+      from { transform: rotateY(0deg); }
+      to   { transform: rotateY(360deg); }
+    }
+    .model-lbl {
+      position: relative; z-index:1;
+      font-size: 0.63rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+    }
+
+    .proj-desc {
+      font-size: 0.79rem;
+      line-height: 1.73;
+      color: var(--text-mid);
+      flex: 1;
+      margin-bottom: 1rem;
+    }
+    .proj-desc strong { color: #c7d2fe; font-weight: 600; }
+    .proj-btns { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: auto; }
+
+    /* ══════════════════════════════════════════
+       SKILLS / MARQUEE
+    ══════════════════════════════════════════ */
+    .marquee-wrap { overflow: hidden; margin-bottom: 0.7rem; }
+    .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+    .marquee-track {
+      display: flex;
+      gap: 0.55rem;
+      width: max-content;
+      animation: mq 24s linear infinite;
+    }
+    @keyframes mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .tag-grid { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+    /* ══════════════════════════════════════════
+       TIMELINE
+    ══════════════════════════════════════════ */
+    .tl { display: flex; flex-direction: column; gap: 1.75rem; }
+    .tl-item { position: relative; padding-left: 1.25rem; }
+    .tl-item::before {
+      content: '';
+      position: absolute; left: 0; top: 0.5rem;
       width: 8px; height: 8px;
       border-radius: 50%;
       background: var(--accent);
-      box-shadow: 0 0 10px rgba(99,102,241,0.7);
+      box-shadow: 0 0 10px rgba(99,102,241,0.72);
     }
-    .timeline-item::after {
+    .tl-item::after {
       content: '';
       position: absolute;
-      left: 3.5px; top: 1.2rem;
-      width: 1px;
-      bottom: -1.2rem;
-      background: linear-gradient(to bottom, rgba(99,102,241,0.4), transparent);
+      left: 3.5px; top: 1.1rem;
+      width: 1px; bottom: -1.75rem;
+      background: linear-gradient(to bottom, rgba(99,102,241,0.36), transparent);
     }
-    .timeline-item:last-child::after { display: none; }
+    .tl-item:last-child::after { display: none; }
+    .tl-period { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.055em; color: var(--accent); margin-bottom: 0.16rem; }
+    .tl-role   { font-family: var(--font-d); font-weight: 700; font-size: 0.87rem; color: #e0e7ff; line-height: 1.3; margin-bottom: 0.14rem; }
+    .tl-org    { font-size: 0.71rem; color: var(--text-muted); margin-bottom: 0.42rem; }
+    .tl-desc   { font-size: 0.74rem; line-height: 1.65; color: var(--text-mid); }
 
-    /* ─── Marquee container ─── */
-    .marquee-track {
-      display: flex;
-      gap: 0.75rem;
-      width: max-content;
-      animation: marquee 22s linear infinite;
-    }
-    .marquee-wrap { overflow: hidden; }
-    .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
-
-    /* ─── Connect icon btn ─── */
-    .connect-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 2.8rem; height: 2.8rem;
-      border-radius: 0.75rem;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: #94a3b8;
+    /* ══════════════════════════════════════════
+       CERTIFICATIONS
+    ══════════════════════════════════════════ */
+    .cert-list { display: flex; flex-direction: column; gap: 0.65rem; }
+    .cert-row {
+      display: flex; align-items: flex-start; gap: 0.68rem;
+      padding: 0.62rem;
+      border-radius: 0.82rem;
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.07);
       transition: all 0.35s ease;
     }
-    .connect-btn:hover {
+    .cert-row:hover { background: rgba(99,102,241,0.07); border-color: rgba(99,102,241,0.26); }
+    .cert-icon {
+      width: 2.1rem; height: 2.1rem;
+      border-radius: 0.48rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .cert-name   { font-size: 0.76rem; font-weight: 600; color: #e0e7ff; margin-bottom: 0.12rem; }
+    .cert-issuer { font-size: 0.67rem; color: var(--text-muted); }
+
+    /* ══════════════════════════════════════════
+       CONNECT
+    ══════════════════════════════════════════ */
+    .icon-row { display: flex; gap: 0.55rem; flex-wrap: wrap; }
+    .icon-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 2.65rem; height: 2.65rem;
+      border-radius: 0.72rem;
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-mid);
+      text-decoration: none;
+      transition: all 0.38s ease;
+    }
+    .icon-btn:hover {
       background: rgba(99,102,241,0.2);
       border-color: rgba(99,102,241,0.5);
       color: #e0e7ff;
       box-shadow: 0 0 18px rgba(99,102,241,0.35);
       transform: scale(1.08);
     }
-
-    /* ─── Grid layout ─── */
-    .bento-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-    }
-    /* Hero spans 2 cols × 2 rows */
-    .card-hero       { grid-column: span 2; grid-row: span 2; }
-    /* Project spans 2 cols × 2 rows */
-    .card-project    { grid-column: span 2; grid-row: span 2; }
-    /* Skills spans 2 cols × 1 row */
-    .card-skills     { grid-column: span 2; grid-row: span 1; }
-    /* Experience spans 1 col × 2 rows */
-    .card-experience { grid-column: span 1; grid-row: span 2; }
-    /* Certifications spans 1 col × 1 row */
-    .card-certs      { grid-column: span 1; grid-row: span 1; }
-    /* Connect spans 1 col × 1 row */
-    .card-connect    { grid-column: span 1; grid-row: span 1; }
-
-    @media (max-width: 1024px) {
-      .bento-grid { grid-template-columns: repeat(2, 1fr); }
-      .card-hero, .card-project, .card-skills { grid-column: span 2; }
-      .card-experience, .card-certs, .card-connect { grid-column: span 1; }
-    }
-    @media (max-width: 640px) {
-      .bento-grid { grid-template-columns: 1fr; }
-      .card-hero, .card-project, .card-skills,
-      .card-experience, .card-certs, .card-connect {
-        grid-column: span 1; grid-row: span 1;
-      }
-    }
-
-    /* ─── View Model button ─── */
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.6rem 1.2rem;
-      border-radius: 0.75rem;
-      font-size: 0.82rem; font-weight: 600;
-      background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(167,139,250,0.2));
-      border: 1px solid rgba(99,102,241,0.45);
-      color: #c7d2fe;
-      cursor: pointer;
-      transition: all 0.35s ease;
-      letter-spacing: 0.02em;
-    }
-    .btn-primary:hover {
-      background: linear-gradient(135deg, rgba(99,102,241,0.5), rgba(167,139,250,0.35));
-      border-color: rgba(99,102,241,0.8);
-      box-shadow: 0 0 22px rgba(99,102,241,0.4);
-      transform: translateY(-1px);
-      color: #e0e7ff;
-    }
-
-    /* ─── Cert badge ─── */
-    .cert-item {
-      display: flex; align-items: flex-start; gap: 0.75rem;
-      padding: 0.75rem;
-      border-radius: 0.875rem;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.07);
-      transition: all 0.35s ease;
-    }
-    .cert-item:hover {
-      background: rgba(99,102,241,0.08);
-      border-color: rgba(99,102,241,0.3);
-    }
-    .cert-icon {
-      width: 2.2rem; height: 2.2rem;
-      border-radius: 0.55rem;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-
-    /* ─── noise grain overlay ─── */
-    body::after {
-      content: '';
-      position: fixed; inset: 0;
-      pointer-events: none; z-index: 999;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: 0.025;
-    }
-
-    /* ─── initial hidden state for animation ─── */
-    .bento-card-anim {
-      opacity: 0;
-      transform: translateY(32px);
-    }
-
-    /* ─── 3D model placeholder ─── */
-    .model-placeholder {
-      border-radius: 1rem;
-      background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(167,139,250,0.06));
-      border: 1px solid rgba(99,102,241,0.2);
-      display: flex; align-items: center; justify-content: center;
-      flex-direction: column; gap: 0.5rem;
-      min-height: 130px;
-      position: relative; overflow: hidden;
-    }
-    .model-placeholder::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 12px,
-        rgba(99,102,241,0.04) 12px,
-        rgba(99,102,241,0.04) 13px
-      );
-    }
-    /* Rotating wireframe cube */
-    .cube-svg { animation: spin3d 8s linear infinite; }
-    @keyframes spin3d { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
-
-    /* section label */
-    .section-label {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
+    .connect-note { font-size: 0.72rem; color: var(--text-lo); line-height: 1.62; margin-top: 0.85rem; }
   </style>
 </head>
-
 <body>
-  <!-- Spotlight layer -->
+
   <div id="spotlight"></div>
 
   <div id="app">
-    <!-- ══════════════════════════════════════════════ -->
-    <!--  PORTFOLIO PAGE                               -->
-    <!-- ══════════════════════════════════════════════ -->
-    <main class="relative z-10 max-w-6xl mx-auto px-4 py-10 md:py-14">
+    <main class="page-wrap">
+      <div class="bento">
 
-      <!-- Grid -->
-      <div class="bento-grid" ref="gridRef">
-
-        <!-- ░░ HERO ░░ -->
-        <div class="glass-card card-hero bento-card-anim p-7 flex flex-col justify-between" ref="cardHero">
-          <div>
-            <span class="status-pill mb-5 inline-flex">
-              <span class="status-dot"></span>
+        <!-- ░░░ HERO (2×2) ░░░ -->
+        <div class="card col2 row2">
+          <div class="ci">
+            <span class="pill">
+              <span class="pill-dot"></span>
               Currently: Engineering at SITHS
             </span>
-            <h1 class="font-display text-4xl md:text-5xl font-extrabold leading-[1.07] tracking-tight mb-3"
-                style="background: linear-gradient(135deg, #f1f5f9 30%, #a5b4fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-              Alex Rivera
-            </h1>
-            <p class="font-display text-lg font-semibold text-indigo-300 mb-4 tracking-wide">
-              Systems Engineer &amp; Technical Leader
+            <h1 class="hero-name">Alex Rivera</h1>
+            <p class="hero-sub">Systems Engineer &amp; Technical Leader</p>
+            <p class="hero-bio">
+              I build autonomous mechanical systems and lead high-performance
+              teams — bridging precision hardware design with intelligent
+              software control.
             </p>
-            <p class="text-sm leading-relaxed" style="color:#94a3b8; max-width:34ch;">
-              I build autonomous mechanical systems and lead high-performance teams — bridging precision hardware design with intelligent software control.
-            </p>
-          </div>
-          <div class="flex flex-wrap gap-2 mt-6">
-            <span class="skill-badge" style="border-color:rgba(110,231,183,0.3);background:rgba(110,231,183,0.08);color:#6ee7b7;">
-              <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="#6ee7b7"/></svg>
-              Open to Collaboration
-            </span>
-            <span class="skill-badge">New York, NY</span>
-          </div>
-        </div>
-
-        <!-- ░░ MAJOR PROJECT ░░ -->
-        <div class="glass-card card-project bento-card-anim p-7 flex flex-col" ref="cardProject">
-          <div class="section-label mb-4">Featured Project</div>
-          <h2 class="font-display text-2xl md:text-3xl font-bold mb-1" style="color:#e0e7ff;">
-            Autonomous Shooting Turret
-          </h2>
-          <p class="text-xs mb-4" style="color:#6366f1; font-weight:600; letter-spacing:0.04em;">
-            Mechanical Design · C++ · PID Control
-          </p>
-
-          <!-- Wireframe model visual -->
-          <div class="model-placeholder mb-5 flex-shrink-0">
-            <!-- Isometric cube wireframe SVG -->
-            <svg class="cube-svg" width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform-style:preserve-3d;">
-              <!-- Top face -->
-              <polygon points="36,4 66,20 36,36 6,20" stroke="#6366f1" stroke-width="1.4" fill="rgba(99,102,241,0.08)"/>
-              <!-- Left face -->
-              <polygon points="6,20 36,36 36,68 6,52" stroke="#818cf8" stroke-width="1.4" fill="rgba(129,140,248,0.06)"/>
-              <!-- Right face -->
-              <polygon points="66,20 36,36 36,68 66,52" stroke="#a78bfa" stroke-width="1.4" fill="rgba(167,139,250,0.06)"/>
-              <!-- Cross-hair detail -->
-              <line x1="36" y1="4" x2="36" y2="68" stroke="rgba(99,102,241,0.25)" stroke-width="0.7" stroke-dasharray="3,3"/>
-              <line x1="6" y1="36" x2="66" y2="36" stroke="rgba(99,102,241,0.25)" stroke-width="0.7" stroke-dasharray="3,3"/>
-            </svg>
-            <span class="text-xs relative z-10" style="color:#6366f1; font-weight:600; letter-spacing:0.06em;">3D MODEL PREVIEW</span>
-          </div>
-
-          <p class="text-sm leading-relaxed mb-5 flex-1" style="color:#94a3b8;">
-            Designed a fully autonomous targeting system using <strong style="color:#c7d2fe;">Autodesk Inventor</strong> for mechanical CAD and <strong style="color:#c7d2fe;">Arduino C++</strong> for real-time servo control. Integrated computer-vision target acquisition with a closed-loop <strong style="color:#c7d2fe;">PID controller</strong> to maintain aim accuracy within ±0.5°. All gears, brackets, and pan-tilt mounts were custom-machined to spec.
-          </p>
-
-          <div class="flex flex-wrap gap-3 mt-auto">
-            <button class="btn-primary">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              View 3D Model
-            </button>
-            <button class="btn-primary" style="background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.1); color:#64748b;">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-              GitHub
-            </button>
-          </div>
-        </div>
-
-        <!-- ░░ SKILLS ░░ -->
-        <div class="glass-card card-skills bento-card-anim p-6 flex flex-col justify-between" ref="cardSkills">
-          <div class="section-label mb-4">Core Skills</div>
-          <!-- Marquee row 1 -->
-          <div class="marquee-wrap mb-3">
-            <div class="marquee-track">
-              <!-- duplicated set for seamless loop -->
-              <span v-for="skill in [...skills, ...skills]" :key="skill.id + Math.random()" class="skill-badge">
-                <span v-html="skill.icon" style="width:14px;height:14px;display:inline-flex;align-items:center;"></span>
-                {{ skill.name }}
+            <div class="hero-tags">
+              <span class="badge badge-green">
+                <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#6ee7b7"/></svg>
+                Open to Collaboration
               </span>
-            </div>
-          </div>
-          <!-- Static grid of tags -->
-          <div class="flex flex-wrap gap-2 mt-1">
-            <span v-for="tag in tags" :key="tag" class="skill-badge" style="font-size:0.72rem; padding:0.25rem 0.7rem;">{{ tag }}</span>
-          </div>
-        </div>
-
-        <!-- ░░ EXPERIENCE ░░ -->
-        <div class="glass-card card-experience bento-card-anim p-6 flex flex-col" ref="cardExp">
-          <div class="section-label mb-5">Experience</div>
-          <div class="flex flex-col gap-7">
-            <div class="timeline-item" v-for="exp in experiences" :key="exp.title">
-              <div class="text-xs mb-0.5" style="color:#6366f1; font-weight:600; letter-spacing:0.05em;">{{ exp.period }}</div>
-              <div class="font-display font-bold text-sm mb-1" style="color:#e0e7ff; line-height:1.3;">{{ exp.title }}</div>
-              <div class="text-xs mb-2" style="color:#64748b;">{{ exp.org }}</div>
-              <p class="text-xs leading-relaxed" style="color:#94a3b8;">{{ exp.desc }}</p>
+              <span class="badge">New York, NY</span>
+              <span class="badge">HAM Radio · KD2XYZ</span>
             </div>
           </div>
         </div>
 
-        <!-- ░░ CERTIFICATIONS ░░ -->
-        <div class="glass-card card-certs bento-card-anim p-6 flex flex-col" ref="cardCerts">
-          <div class="section-label mb-4">Certifications</div>
-          <div class="flex flex-col gap-3">
-            <div class="cert-item" v-for="cert in certs" :key="cert.name">
-              <div class="cert-icon" :style="{ background: cert.iconBg }">
-                <span v-html="cert.icon"></span>
+        <!-- ░░░ PROJECT (2×2) ░░░ -->
+        <div class="card col2 row2">
+          <div class="ci">
+            <div class="lbl">Featured Project</div>
+            <h2 class="proj-title">Autonomous Shooting Turret</h2>
+            <p class="proj-meta">Mechanical Design · C++ · Arduino · PID Control</p>
+
+            <div class="model-box">
+              <svg class="cube" width="68" height="68" viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="34,4 61,18 34,32 7,18" stroke="#6366f1" stroke-width="1.3" fill="rgba(99,102,241,0.09)"/>
+                <polygon points="7,18 34,32 34,63 7,49"  stroke="#818cf8" stroke-width="1.3" fill="rgba(99,102,241,0.055)"/>
+                <polygon points="61,18 34,32 34,63 61,49" stroke="#a78bfa" stroke-width="1.3" fill="rgba(167,139,250,0.055)"/>
+                <line x1="34" y1="4"  x2="34" y2="63" stroke="rgba(99,102,241,0.2)" stroke-width="0.7" stroke-dasharray="3,3"/>
+                <line x1="7"  y1="33" x2="61" y2="33" stroke="rgba(99,102,241,0.2)" stroke-width="0.7" stroke-dasharray="3,3"/>
+              </svg>
+              <span class="model-lbl">3D MODEL PREVIEW</span>
+            </div>
+
+            <p class="proj-desc">
+              Designed a fully autonomous targeting system using
+              <strong>Autodesk Inventor</strong> for mechanical CAD and
+              <strong>Arduino C++</strong> for real-time servo control.
+              Integrated computer-vision target acquisition with a closed-loop
+              <strong>PID controller</strong> maintaining aim accuracy within ±0.5°.
+              All gears, brackets, and pan-tilt mounts were custom-machined to specification.
+            </p>
+
+            <div class="proj-btns">
+              <button class="btn btn-accent">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                View 3D Model
+              </button>
+              <button class="btn btn-ghost">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55v-1.93c-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 2.87-.39c.97 0 1.95.13 2.87.39 2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.43-2.69 5.41-5.25 5.69.41.36.78 1.06.78 2.13v3.16c0 .3.2.66.79.55C20.21 21.38 23.5 17.08 23.5 12 23.5 5.73 18.27.5 12 .5z"/>
+                </svg>
+                GitHub
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ░░░ SKILLS (2×1) ░░░ -->
+        <div class="card col2">
+          <div class="ci">
+            <div class="lbl">Core Skills</div>
+            <div class="marquee-wrap">
+              <div class="marquee-track">
+                <span v-for="s in marqueeSkills" :key="s + '_m'" class="badge">{{ s }}</span>
               </div>
-              <div>
-                <div class="text-xs font-semibold mb-0.5" style="color:#e0e7ff;">{{ cert.name }}</div>
-                <div class="text-xs" style="color:#64748b;">{{ cert.issuer }}</div>
+            </div>
+            <div class="tag-grid">
+              <span v-for="t in tagCloud" :key="t" class="badge badge-sm">{{ t }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ░░░ EXPERIENCE (1×2) ░░░ -->
+        <div class="card col1 row2">
+          <div class="ci">
+            <div class="lbl">Experience</div>
+            <div class="tl">
+              <div class="tl-item" v-for="e in experiences" :key="e.role">
+                <div class="tl-period">{{ e.period }}</div>
+                <div class="tl-role">{{ e.role }}</div>
+                <div class="tl-org">{{ e.org }}</div>
+                <p class="tl-desc">{{ e.desc }}</p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- ░░ CONNECT ░░ -->
-        <div class="glass-card card-connect bento-card-anim p-6 flex flex-col justify-between" ref="cardConnect">
-          <div class="section-label mb-4">Connect</div>
-          <div class="flex gap-3 flex-wrap">
-            <a href="#" class="connect-btn" title="GitHub">
-              <!-- GitHub icon -->
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55v-1.93c-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 2.87-.39c.97 0 1.95.13 2.87.39 2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.43-2.69 5.41-5.25 5.69.41.36.78 1.06.78 2.13v3.16c0 .3.2.66.79.55C20.21 21.38 23.5 17.08 23.5 12 23.5 5.73 18.27.5 12 .5z"/></svg>
-            </a>
-            <a href="#" class="connect-btn" title="LinkedIn">
-              <!-- LinkedIn icon -->
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.57V9h3.55v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.27V1.73C24 .77 23.2 0 22.22 0z"/></svg>
-            </a>
-            <a href="mailto:alex@example.com" class="connect-btn" title="Email">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </a>
+        <!-- ░░░ CERTIFICATIONS (1×1) ░░░ -->
+        <div class="card col1">
+          <div class="ci">
+            <div class="lbl">Certifications</div>
+            <div class="cert-list">
+              <div class="cert-row" v-for="c in certs" :key="c.name">
+                <div class="cert-icon" :style="{ background: c.bg }">
+                  <!-- Radio -->
+                  <svg v-if="c.type==='radio'" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+                    <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+                    <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+                    <circle cx="12" cy="20" r="1" fill="#818cf8" stroke="none"/>
+                  </svg>
+                  <!-- Star (Autodesk) -->
+                  <svg v-else width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="cert-name">{{ c.name }}</div>
+                  <div class="cert-issuer">{{ c.issuer }}</div>
+                </div>
+              </div>
+            </div>
           </div>
-          <p class="text-xs mt-4" style="color:#475569; line-height:1.6;">
-            Always open to discussing innovative engineering challenges and leadership opportunities.
-          </p>
         </div>
 
-      </div><!-- /bento-grid -->
+        <!-- ░░░ CONNECT (1×1) ░░░ -->
+        <div class="card col1">
+          <div class="ci">
+            <div class="lbl">Connect</div>
+            <div class="icon-row">
+              <a href="#" class="icon-btn" title="GitHub">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55v-1.93c-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 2.87-.39c.97 0 1.95.13 2.87.39 2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.43-2.69 5.41-5.25 5.69.41.36.78 1.06.78 2.13v3.16c0 .3.2.66.79.55C20.21 21.38 23.5 17.08 23.5 12 23.5 5.73 18.27.5 12 .5z"/>
+                </svg>
+              </a>
+              <a href="#" class="icon-btn" title="LinkedIn">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.57V9h3.55v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.27V1.73C24 .77 23.2 0 22.22 0z"/>
+                </svg>
+              </a>
+              <a href="mailto:alex@example.com" class="icon-btn" title="Email">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+              </a>
+            </div>
+            <p class="connect-note">
+              Always open to innovative engineering challenges and leadership opportunities.
+            </p>
+          </div>
+        </div>
+
+      </div><!-- /bento -->
     </main>
-  </div><!-- /app -->
+  </div>
 
+  <!-- ══════════════════════════════════════════
+       Vue 3 — Composition API
+       Staggered entrance: native Web Animations API
+       (no external library needed — runs at 60fps)
+  ══════════════════════════════════════════ -->
   <script>
   const { createApp, ref, onMounted } = Vue;
 
   createApp({
     setup() {
-      const gridRef = ref(null);
+      /* duplicated so the marquee loops seamlessly */
+      const RAW = [
+        '⚙️ Autodesk Inventor', '💻 C++', '🐍 Python',
+        '🔌 Arduino', '📡 PID Loops', '🔧 Servo Control', '👁️ Computer Vision',
+      ];
+      const marqueeSkills = ref([...RAW, ...RAW]);
 
-      /* ─── Skills data ─── */
-      const skills = ref([
-        { id: 1, name: 'Autodesk Inventor', icon: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9l6 6m-6 0l6-6"/></svg>` },
-        { id: 2, name: 'C++',               icon: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>` },
-        { id: 3, name: 'Python',             icon: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 4 4.48 4 7v2h8v1H4c-1.1 0-2 .9-2 2v4c0 2.21 1.79 4 4 4h2v-2H6a2 2 0 0 1-2-2v-3h8v3c0 2.21 1.79 4 4 4h2c2.21 0 4-1.79 4-4V7c0-2.52-2.48-5-8-5z"/></svg>` },
-        { id: 4, name: 'Arduino',            icon: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="8" x2="12" y2="16"/></svg>` },
-        { id: 5, name: 'PID Control',        icon: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>` },
+      const tagCloud = ref([
+        'Mechanical CAD', 'Real-Time Systems', 'Embedded C',
+        'HAM Radio', 'Leadership', 'Git / GitHub', 'SolidWorks', 'LaTeX',
       ]);
 
-      const tags = ref(['Servo Control', 'Mechanical CAD', 'Computer Vision', 'Real-Time Systems', 'Leadership', 'HAM Radio']);
-
-      /* ─── Experiences ─── */
       const experiences = ref([
         {
-          title: 'President',
+          role: 'President',
           org: 'Electrical Workshop Club',
           period: '2024 – Present',
           desc: 'Leading 30+ members in hands-on electronics & robotics projects. Organized three inter-school competitions and secured $4k in equipment funding.',
         },
         {
-          title: 'Manager',
-          org: 'Girls\' Volleyball Team',
+          role: 'Manager',
+          org: "Girls' Volleyball Team",
           period: '2023 – Present',
-          desc: 'Coordinating logistics, statistics tracking, and team communications for a 14-person varsity roster across a 22-game season.',
+          desc: 'Coordinating logistics, stats tracking, and team communications for a 14-player varsity roster across a 22-game season.',
         },
       ]);
 
-      /* ─── Certifications ─── */
       const certs = ref([
-        {
-          name: 'Amateur Radio License',
-          issuer: 'FCC — Technician Class',
-          iconBg: 'rgba(99,102,241,0.18)',
-          icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12" y2="20"/></svg>`,
-        },
-        {
-          name: 'Autodesk Inventor Certified',
-          issuer: 'Autodesk — Professional',
-          iconBg: 'rgba(251,146,60,0.15)',
-          icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
-        },
+        { name: 'Amateur Radio License',      issuer: 'FCC — Technician Class',   type: 'radio', bg: 'rgba(99,102,241,0.18)' },
+        { name: 'Autodesk Inventor Certified', issuer: 'Autodesk — Professional',  type: 'star',  bg: 'rgba(251,146,60,0.15)' },
       ]);
 
-      /* ─── Spotlight effect ─── */
       onMounted(() => {
+        /* ── Spotlight ── */
         const spotlight = document.getElementById('spotlight');
+        window.addEventListener('mousemove', (e) => {
+          spotlight.style.background =
+            `radial-gradient(680px circle at ${e.clientX}px ${e.clientY}px,` +
+            `rgba(99,102,241,0.075) 0%, rgba(99,102,241,0.026) 32%, transparent 68%)`;
+        }, { passive: true });
 
-        const moveSpotlight = (e) => {
-          const x = e.clientX;
-          const y = e.clientY;
-          spotlight.style.background = `
-            radial-gradient(
-              700px circle at ${x}px ${y}px,
-              rgba(99,102,241,0.07) 0%,
-              rgba(99,102,241,0.03) 30%,
-              transparent 70%
-            )
-          `;
-        };
-
-        window.addEventListener('mousemove', moveSpotlight, { passive: true });
-
-        /* ─── Staggered entrance animation using Motion One ─── */
-        const cards = document.querySelectorAll('.bento-card-anim');
-
-        // Motion One is loaded as window.Motion
-        const { animate, spring } = window.Motion;
-
-        cards.forEach((card, i) => {
-          animate(
-            card,
-            { opacity: [0, 1], transform: ['translateY(36px)', 'translateY(0px)'] },
+        /* ── Staggered entrance via Web Animations API ──
+           Cards start opacity:0 (set in CSS).
+           animate() with fill:'forwards' locks them at opacity:1 after finishing.
+           Each card is delayed by an extra 95ms so they cascade in one by one. */
+        document.querySelectorAll('.card').forEach((card, i) => {
+          card.animate(
+            [
+              { opacity: 0, transform: 'translateY(30px)' },
+              { opacity: 1, transform: 'translateY(0px)'  },
+            ],
             {
-              duration: 0.65,
-              delay: 0.08 + i * 0.1,
-              easing: [0.25, 0.46, 0.45, 0.94],
+              duration: 600,
+              delay:    60 + i * 95,
+              easing:   'cubic-bezier(0.22, 1, 0.36, 1)',
+              fill:     'forwards',
             }
           );
         });
       });
 
-      return { gridRef, skills, tags, experiences, certs };
-    }
+      return { marqueeSkills, tagCloud, experiences, certs };
+    },
   }).mount('#app');
   </script>
 </body>
