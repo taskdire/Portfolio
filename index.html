@@ -94,7 +94,23 @@
       .col2 { grid-column: span 2; }
       .col1 { grid-column: span 1; }
     }
+/* 1. Limit the height of the experience container */
+.tl-scroll-area {
+  max-height: 480px; /* Adjust this value to fit your layout */
+  overflow-y: auto;
+  padding-right: 0.5rem; /* Space for the scrollbar */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--accent-border) transparent;
+}
 
+/* 2. Style the scrollbar for Chrome/Safari/Edge */
+.tl-scroll-area::-webkit-scrollbar {
+  width: 4px;
+}
+.tl-scroll-area::-webkit-scrollbar-thumb {
+  background-color: var(--accent-border);
+  border-radius: 10px;
+}
     /* ══════════════════════════════════════════
        GLASS CARD
     ══════════════════════════════════════════ */
