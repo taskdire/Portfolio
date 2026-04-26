@@ -37,12 +37,6 @@ const experiences = ref([
         period: '[Date Range]', 
         desc: '[Brief description of your internship responsibilities and achievements.]' 
     },
-        { 
-        role: 'Intern', 
-        org: '[Company/Organization Name]', 
-        period: '[Date Range]', 
-        desc: '[Brief description of your internship responsibilities and achievements.]' 
-    },
     { 
         role: 'President', 
         org: 'Electrical Workshop Club', 

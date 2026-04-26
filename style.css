@@ -36,13 +36,23 @@ body::after {
 #spotlight { pointer-events: none; position: fixed; inset: 0; z-index: 0; }
 
 /* ── PAGE & GRID ── */
-.page-wrap { position: relative; z-index: 1; height: 100vh; display: flex; align-items: stretch; padding: 1.1rem; }
+.page-wrap { 
+    position: relative; 
+    z-index: 1; 
+    min-height: 100vh; /* Changed from height to min-height */
+    display: flex; 
+    align-items: stretch; 
+    padding: 1.1rem; 
+}
+
 .bento {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    /* This is the fix: 'auto' lets the top cards grow to fit your name, 
+       '1fr' tells the bottom cards to take the remaining space */
+    grid-template-rows: auto 1fr; 
     gap: 0.9rem;
-    width: 100%; height: 100%;
+    width: 100%;
     max-width: 1300px;
     margin: 0 auto;
 }
@@ -60,8 +70,10 @@ body::after {
     position: relative;
     overflow: hidden;
     transition: all .45s ease;
-    opacity: 1; /* Changed from 0 so you can see it immediately */
-    min-height: 0;
+    opacity: 1; 
+    min-height: 0; /* Critical for children to scroll correctly in grid */
+    display: flex;
+    flex-direction: column;
 }
 .card::before {
     content: ''; position: absolute; inset: 0;
@@ -75,17 +87,16 @@ body::after {
 }
 
 /* ── INNER CONTAINERS & SCROLLING ── */
-/* 1. First, we lock all inner containers by default */
 .ci {
     display: flex; 
     flex-direction: column; 
     height: 100%; 
     position: relative; 
     z-index: 1;
-    overflow: hidden; /* This keeps the Hero name from scrolling */
+    overflow: hidden; /* Locks Hero and Projects */
 }
 
-/* 2. Then, we "unlock" ONLY the experience card */
+/* Unlocks ONLY the experience card */
 .card.experience-card .ci {
     overflow-y: auto !important; 
     scrollbar-width: thin; 
@@ -113,15 +124,41 @@ body::after {
 .pill {
     display: inline-flex; align-items: center; gap: .42rem; background: rgba(99,102,241,0.13); 
     border: 1px solid rgba(99,102,241,0.36); border-radius: 999px; padding: .26rem .78rem;
-    font-size: .72rem; color: #a5b4fc; margin-bottom: 1rem;
+    font-size: .72rem; color: #a5b4fc; margin-bottom: 0.8rem;
 }
 .pill-dot { width: 7px; height: 7px; background: var(--green); border-radius: 50%; box-shadow: 0 0 7px 2px rgba(110,231,183,0.62); animation: blink 2.2s infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
 
-.hero-name { font-family: var(--font-d); font-size: clamp(1.7rem,3vw,2.8rem); font-weight: 800; background: linear-gradient(135deg,#f1f5f9,#a5b4fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.hero-sub { font-family: var(--font-d); font-size: .9rem; font-weight: 600; color: #818cf8; margin-bottom: .7rem; }
-.hero-bio { font-size: .8rem; line-height: 1.72; color: var(--text-mid); }
-.hero-tags { display: flex; flex-wrap: wrap; gap: .42rem; margin-top: auto; padding-top: .9rem; }
+.hero-name { 
+    font-family: var(--font-d); 
+    font-size: clamp(1.8rem, 3vw, 2.6rem); 
+    font-weight: 800; 
+
+    letter-spacing: 0.04em;   /* KEY FIX */
+    line-height: 1.15;        /* less cramped */
+
+    background: linear-gradient(135deg,#f1f5f9,#a5b4fc); 
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+
+    margin-bottom: 0.6rem;
+}
+
+
+.hero-sub { 
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #818cf8;
+    margin-bottom: 0.7rem;
+}
+
+.hero-bio { 
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--text-mid);
+    max-width: 42ch; /* keeps it readable */
+}
+.hero-tags { display: flex; flex-wrap: wrap; gap: .42rem; margin-top: auto; padding-top: 0.8rem; }
 
 /* ── CAROUSEL ── */
 .proj-nav { display: flex; align-items: center; gap: .4rem; }
@@ -129,7 +166,16 @@ body::after {
 .proj-dots { display: flex; gap: .32rem; }
 .proj-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(99,102,241,0.28); border: none; cursor: pointer; transition: .3s; }
 .proj-dot.active { background: #6366f1; width: 14px; border-radius: 3px; }
-.model-box { border-radius: .9rem; background: rgba(99,102,241,0.05); border: 1px solid rgba(99,102,241,0.17); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 85px; margin-bottom: .75rem; }
+.model-box { 
+    border-radius: .9rem; 
+    background: rgba(99,102,241,0.05); 
+    border: 1px solid rgba(99,102,241,0.17); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    min-height: 60px; /* Lowered from 85px */
+    margin-bottom: .5rem; 
+}
 .cube { animation: spin 9s linear infinite; }
 @keyframes spin { from{transform:rotateY(0deg)} to{transform:rotateY(360deg)} }
 
@@ -150,4 +196,15 @@ body::after {
     html, body { overflow: auto; }
     .page-wrap { height: auto; padding: 1rem; }
     .bento { grid-template-columns: repeat(2, 1fr); grid-template-rows: none; }
+}
+
+.proj-title {
+    margin-top: 0.6rem;
+    margin-bottom: 0.25rem;
+}
+
+.proj-meta {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
 }
