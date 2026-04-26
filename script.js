@@ -18,26 +18,38 @@ createApp({
             'Algebra II Tutoring', '3D Modeling', 'Git/GitHub', 'LaTeX'
         ]);
 
-        const experiences = ref([
-            { 
-                role: 'President', 
-                org: 'Electrical Workshop Club', 
-                period: '2024 – Present', 
-                desc: 'Leading members in hands-on electronics & robotics projects. Focused on system integration and technical mentorship.' 
-            },
-            { 
-                role: 'Academic Tutor', 
-                org: 'Freelance / SITHS Peer', 
-                period: '2025 – Present', 
-                desc: 'Providing instruction in Algebra II and language studies, creating structured materials for student success.' 
-            },
-            { 
-                role: 'Manager', 
-                org: "Girls' Varsity Volleyball Team", 
-                period: '2023 – Present', 
-                desc: 'Coordinating logistics and data tracking for varsity team performance.' 
-            }
-        ]);
+const experiences = ref([
+    { 
+        role: 'Academic Tutor', 
+        org: 'Freelance / SITHS Peer', 
+        period: '2025 – Present', 
+        desc: 'Providing instruction in Algebra II and language studies, creating structured materials for student success.' 
+    },
+    { 
+        role: 'Intern', 
+        org: '[Company/Organization Name]', 
+        period: '[Date Range]', 
+        desc: '[Brief description of your internship responsibilities and achievements.]' 
+    },
+        { 
+        role: 'Intern', 
+        org: '[Company/Organization Name]', 
+        period: '[Date Range]', 
+        desc: '[Brief description of your internship responsibilities and achievements.]' 
+    },
+        { 
+        role: 'Intern', 
+        org: '[Company/Organization Name]', 
+        period: '[Date Range]', 
+        desc: '[Brief description of your internship responsibilities and achievements.]' 
+    },
+    { 
+        role: 'President', 
+        org: 'Electrical Workshop Club', 
+        period: '2024 – Present', 
+        desc: 'Leading members in hands-on electronics & robotics projects. Focused on system integration and technical mentorship.' 
+    }
+]);
 
         const certs = ref([
             { name: 'Amateur Radio License', issuer: 'FCC — Technician Class', type: 'radio', bg: 'rgba(99,102,241,0.18)' },

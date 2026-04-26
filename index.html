@@ -97,19 +97,20 @@
                 </div>
             </div>
 
-            <div class="card col1 row2">
-                <div class="ci">
-                    <div class="lbl">Leadership & Roles</div>
-                    <div class="tl">
-                        <div class="tl-item" v-for="e in experiences" :key="e.role">
-                            <div class="tl-period">{{ e.period }}</div>
-                            <div class="tl-role">{{ e.role }}</div>
-                            <div class="tl-org">{{ e.org }}</div>
-                            <p class="tl-desc">{{ e.desc }}</p>
-                        </div>
-                    </div>
-                </div>
+<div class="card col1 row2 experience-card">
+    <div class="ci">
+        <div class="lbl">Experience</div>
+        
+        <div class="tl">
+            <div v-for="e in experiences" :key="e.role" class="tl-item">
+                <div class="tl-role">{{ e.role }}</div>
+                <div class="tl-org">{{ e.org }} • {{ e.period }}</div>
+                <p class="tl-desc">{{ e.desc }}</p>
             </div>
+        </div>
+        
+    </div>
+</div>
 
             <div class="card col1">
                 <div class="ci">

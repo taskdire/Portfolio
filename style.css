@@ -60,7 +60,7 @@ body::after {
     position: relative;
     overflow: hidden;
     transition: all .45s ease;
-    opacity: 0;
+    opacity: 1; /* Changed from 0 so you can see it immediately */
     min-height: 0;
 }
 .card::before {
@@ -73,10 +73,25 @@ body::after {
     box-shadow: 0 0 48px -12px rgba(99,102,241,0.28);
     transform: translateY(-2px);
 }
+
+/* ── INNER CONTAINERS & SCROLLING ── */
+/* 1. First, we lock all inner containers by default */
 .ci {
-    display: flex; flex-direction: column; height: 100%; position: relative; z-index: 1;
-    overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(99,102,241,0.3) transparent;
+    display: flex; 
+    flex-direction: column; 
+    height: 100%; 
+    position: relative; 
+    z-index: 1;
+    overflow: hidden; /* This keeps the Hero name from scrolling */
 }
+
+/* 2. Then, we "unlock" ONLY the experience card */
+.card.experience-card .ci {
+    overflow-y: auto !important; 
+    scrollbar-width: thin; 
+    scrollbar-color: rgba(99,102,241,0.3) transparent;
+}
+
 .ci::-webkit-scrollbar { width: 3px; }
 .ci::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.3); border-radius: 99px; }
 
@@ -119,10 +134,11 @@ body::after {
 @keyframes spin { from{transform:rotateY(0deg)} to{transform:rotateY(360deg)} }
 
 /* ── TIMELINE ── */
-.tl { display: flex; flex-direction: column; gap: 1.4rem; }
+.tl { display: flex; flex-direction: column; gap: 1.4rem; padding-bottom: 1rem; }
 .tl-item { position: relative; padding-left: 1.25rem; }
 .tl-item::before { content: ''; position: absolute; left: 0; top: .5rem; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
 .tl-role { font-family: var(--font-d); font-weight: 700; color: #e0e7ff; }
+.tl-desc { font-size: 0.8rem; line-height: 1.6; color: var(--text-mid); margin-top: 0.4rem; }
 
 /* ── MARQUEE ── */
 .marquee-wrap { overflow: hidden; margin-bottom: .6rem; }
