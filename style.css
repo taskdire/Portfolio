@@ -405,7 +405,6 @@ body::after {
    SKILLS / MARQUEE
 ══════════════════════════════════════════ */
 .marquee-wrap { overflow: hidden; margin-bottom: 0.6rem; flex-shrink: 0; }
-.marquee-wrap:hover .marquee-track { animation-play-state: paused; }
 .marquee-track {
   display: flex;
   gap: 0.55rem;
