@@ -1,0 +1,163 @@
+// ============================================================
+// src/data/index.js
+// Single source of truth for all portfolio content.
+// To update your info, edit ONLY this file.
+// ============================================================
+
+// ── Projects (used by ProjectCarousel.vue) ──────────────────
+export const projects = [
+  {
+    title: 'Autonomous Shooting Turret',
+    stack: 'C++  ·  Arduino  ·  PID Control  ·  Autodesk Inventor',
+    modelLabel: '3D MODEL PREVIEW',
+    color: '#6366f1',
+    color2: '#818cf8',
+    cta: 'View 3D Model',
+    // To use a real photo: img: '/images/turret.png'
+    // Place the image in the /public/images/ folder
+    img: null,
+    thumbs: [
+      { label: 'MECH CAD', img: null },
+      { label: 'CIRCUIT',  img: null },
+      { label: 'DEMO',     img: null },
+    ],
+    desc: `Designed a fully autonomous targeting system using <strong>Autodesk Inventor</strong>
+           for mechanical CAD and <strong>Arduino C++</strong> for real-time servo control.
+           Integrated computer-vision target acquisition with a closed-loop
+           <strong>PID controller</strong> maintaining aim accuracy within ±0.5°.
+           All gears, brackets, and pan-tilt mounts were custom-machined to specification.`,
+  },
+  {
+    title: 'PID Line-Following Robot',
+    stack: 'C++  ·  Arduino  ·  Sensor Fusion  ·  CAD',
+    modelLabel: 'SCHEMATIC VIEW',
+    color: '#6ee7b7',
+    color2: '#34d399',
+    cta: 'View Schematics',
+    img: null,
+    thumbs: [
+      { label: 'CHASSIS', img: null },
+      { label: 'SENSORS', img: null },
+    ],
+    desc: `Built a high-speed differential-drive robot using an array of <strong>IR sensors</strong>
+           feeding into a tuned <strong>PID loop</strong> for smooth, jitter-free line following.
+           Achieved lap times 40% faster than proportional-only control.
+           Custom 3D-printed chassis optimized for weight distribution and sensor clearance.`,
+  },
+  {
+    title: 'HAM Radio Repeater Network',
+    stack: 'RF Engineering  ·  Python  ·  Raspberry Pi  ·  FCC',
+    modelLabel: 'RF TOPOLOGY',
+    color: '#fbbf24',
+    color2: '#f59e0b',
+    cta: 'View Documentation',
+    img: null,
+    thumbs: [
+      { label: 'RF MAP', img: null },
+      { label: 'PYTHON', img: null },
+    ],
+    desc: `Designed and licensed a two-meter <strong>amateur radio repeater</strong>
+           serving the Staten Island area. Built a <strong>Python-based</strong> controller
+           on Raspberry Pi for DTMF decoding, ID beaconing, and remote diagnostics.`,
+  },
+]
+
+// ── Experience (used by ExperienceCard.vue) ─────────────────
+export const experiences = [
+  {
+    role: 'Intern',
+    org: 'Summer Design Institute / SYEP',
+    period: 'July 2025 – August 2025',
+    bullets: [
+      'Spearheaded a drone aviation curriculum for the cohort.',
+      'Utilized CAD for technical modeling and design iteration.',
+      'Collaborated in a high-velocity team to meet complex deadlines.',
+    ],
+  },
+  {
+    role: 'Private Tutor',
+    org: 'Independent / Staten Island',
+    period: 'Feb 2026 – Present',
+    bullets: [
+      'One-on-one mathematics instruction with customized lesson plans.',
+      'Targeted test preparation and problem-solving skill development.',
+    ],
+  },
+  {
+    role: 'President',
+    org: 'Electrical Workshop Club',
+    period: '2024 – Present',
+    bullets: [
+      'Leading 30+ members in electronics & robotics projects.',
+      'Organized three inter-school competitions.',
+      'Secured $4k in equipment funding.',
+    ],
+  },
+  {
+    role: 'Intern',
+    org: 'Summer Design Institute / SYEP',
+    period: 'July 2024 – August 2024',
+    bullets: [
+      'Hardware prototyping via precision soldering & assembly.',
+      'Developed fundamental CAD skills on group projects.',
+    ],
+  },
+]
+
+// ── Skills (used by SkillsGrid.vue) ─────────────────────────
+// Marquee is doubled in the component for seamless looping
+export const marqueeSkills = [
+  '⚙️ Autodesk Inventor,',
+  '🧩 SolidWorks,',
+  '🔌 Arduino,',
+  '💻 C++,',
+  '🐍 Python,',
+  '🛠️ Embedded C,',
+  '📡 PID Control,',
+  '🔧 Servo Control,',
+  '📊 Sensor Fusion,',
+  '📻 HAM Radio,',
+  '📐 CAD/CAM,',
+  '🧪 Soldering',
+]
+
+
+// ── Certifications (used by CertsCard.vue) ──────────────────
+export const certs = [
+  {
+    name: 'Amateur Radio License',
+    issuer: 'FCC — Technician Class',
+    type: 'radio',
+    bg: 'rgba(99,102,241,0.18)',
+  },
+  {
+    name: 'Autodesk Inventor Certified',
+    issuer: 'Autodesk — Professional',
+    type: 'star',
+    bg: 'rgba(251,146,60,0.15)',
+  },
+]
+
+// ── Personal info (used by HeroCard.vue) ────────────────────
+export const personal = {
+  name: 'Kitson Lau',
+  title: 'Student at Staten Island Technical High School',
+  status: 'Currently: Pursuing Mechanical Engineering',
+  bio: 'Junior at Staten Island Technical High School aspiring to push the boundaries of Mechanical Engineering as a future R&D Engineer. I specialize in the architecture of active systems—moving beyond static models to build autonomous turret systems and high-precision prototypes. By integrating Autodesk Inventor workflows with PID control loops, I bridge the gap between complex theoretical design and functional, high-performance hardware.',
+  location: 'New York, NY',
+  callsign: 'KE2DWI',
+  email: 'KitsonJFLau@gmail.com',
+  github: 'https://github.com/taskdire',
+  linkedin: '#',
+  stats: [
+    { val: '4+', key: 'Projects' },
+    { val: '2', key: 'Internship' },
+    { val: '4', key: 'Certifications' },
+  ],
+  focus: [],
+  education: {
+    school: 'Staten Island Technical High School',
+    degree: 'Expected Graduation 2027',
+    years: '2023 – 2027',
+  },
+}
