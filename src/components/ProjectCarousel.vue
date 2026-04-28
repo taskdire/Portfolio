@@ -76,19 +76,6 @@
         <p class="proj-meta">{{ current.stack }}</p>
         <p class="proj-desc" v-html="current.desc"></p>
 
-        <!-- Action button -->
-        <div class="proj-btns">
-          <button class="btn btn-accent">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2.3"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="7 10 12 15 17 10"/>
-              <line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
-            {{ current.cta }}
-          </button>
-        </div>
       </div>
     </transition>
   </div>
@@ -275,6 +262,18 @@ const closeThumb = () => { selectedThumb.value = null }
 .proj-btns { 
   display: flex; flex-wrap: wrap; gap: 0.42rem; flex-shrink: 0;
   position: absolute; bottom: 1.05rem; left: 1.05rem;
+}
+
+@media (max-width: 600px) {
+  .proj-slide {
+    position: relative;
+  }
+  .proj-btns {
+    position: static;
+    margin-top: 1rem;
+    left: unset;
+    bottom: unset;
+  }
 }
 
 /* Slide transition */
