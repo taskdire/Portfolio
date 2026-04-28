@@ -153,5 +153,7 @@ import { personal, marqueeSkills } from '../data/index.js'
 .hero-tags {
   display: flex; flex-wrap: wrap; gap: .32rem;
   margin-top: auto; padding-top: .5rem; flex-shrink: 0;
+  position: absolute; bottom: 1.05rem; left: 1.05rem;
+  width: calc(100% - 2.1rem);
 }
 </style>

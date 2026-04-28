@@ -56,7 +56,6 @@
             <line x1="30" y1="4"  x2="30" y2="56" stroke="rgba(99,102,241,0.2)" stroke-width=".7" stroke-dasharray="3,3"/>
             <line x1="5"  y1="30" x2="55" y2="30" stroke="rgba(99,102,241,0.2)" stroke-width=".7" stroke-dasharray="3,3"/>
           </svg>
-          <span class="model-lbl">{{ current.modelLabel }}</span>
         </div>
 
         <!-- Thumbnail strip — add real images via thumbs[].img in data/index.js -->
@@ -77,7 +76,7 @@
         <p class="proj-meta">{{ current.stack }}</p>
         <p class="proj-desc" v-html="current.desc"></p>
 
-        <!-- Action buttons -->
+        <!-- Action button -->
         <div class="proj-btns">
           <button class="btn btn-accent">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
@@ -88,12 +87,6 @@
               <line x1="12" y1="15" x2="12" y2="3"/>
             </svg>
             {{ current.cta }}
-          </button>
-          <button class="btn btn-ghost">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55v-1.93c-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 2.87-.39c.97 0 1.95.13 2.87.39 2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.43-2.69 5.41-5.25 5.69.41.36.78 1.06.78 2.13v3.16c0 .3.2.66.79.55C20.21 21.38 23.5 17.08 23.5 12 23.5 5.73 18.27.5 12 .5z"/>
-            </svg>
-            GitHub
           </button>
         </div>
       </div>
@@ -107,6 +100,7 @@ import { projects } from '../data/index.js'
 
 // ── Carousel state ───────────────────────────────────────────
 const idx = ref(0)
+const selectedThumb = ref(null)  // For modal
 
 // Computed shorthand so template stays clean
 const current = computed(() => projects[idx.value])
@@ -114,6 +108,8 @@ const current = computed(() => projects[idx.value])
 const next = () => { if (idx.value < projects.length - 1) idx.value++ }
 const prev = () => { if (idx.value > 0) idx.value-- }
 const goTo = (i) => { idx.value = i }
+const openThumb = (thumb) => { selectedThumb.value = thumb }
+const closeThumb = () => { selectedThumb.value = null }
 </script>
 
 <style scoped>
@@ -153,7 +149,15 @@ const goTo = (i) => { idx.value = i }
   flex-direction: column;
   flex: 1;
   min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(99,102,241,0.3) transparent;
+  padding-right: 4px;
+  padding-bottom: 0.6rem;
 }
+.proj-slide::-webkit-scrollbar       { width: 4px; }
+.proj-slide::-webkit-scrollbar-track { background: transparent; }
+.proj-slide::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.3); border-radius: 4px; }
 
 /* Model / image box */
 .model-box {
@@ -264,14 +268,14 @@ const goTo = (i) => { idx.value = i }
   line-height: 1.7;
   color: var(--text-2);
   flex: 1;
-  overflow-y: auto;
   min-height: 0;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(99,102,241,0.3) transparent;
 }
 .proj-desc :deep(strong) { color: #c7d2fe; font-weight: 600; }
 
-.proj-btns { display: flex; flex-wrap: wrap; gap: 0.42rem; padding-top: 0.58rem; flex-shrink: 0; }
+.proj-btns { 
+  display: flex; flex-wrap: wrap; gap: 0.42rem; flex-shrink: 0;
+  position: absolute; bottom: 1.05rem; left: 1.05rem;
+}
 
 /* Slide transition */
 .slide-enter-active, .slide-leave-active { transition: all 0.32s cubic-bezier(0.4,0,0.2,1); }

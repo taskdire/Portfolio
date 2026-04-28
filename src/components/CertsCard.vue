@@ -1,5 +1,6 @@
 <template>
   <div class="card">
+    <div class="scroll-inner">
     <!-- Certifications -->
     <div class="lbl">Certifications</div>
     <div class="cert-list">
@@ -65,6 +66,7 @@
         <polyline points="22,6 12,13 2,6"/>
       </svg>
       <a :href="'mailto:' + personal.email">{{ personal.email }}</a>
+    </div>
     </div>
   </div>
 </template>
