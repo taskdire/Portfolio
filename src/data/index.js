@@ -15,7 +15,7 @@ export const projects = [
     cta: 'View 3D Model',
     // To use a real photo: img: '/images/turret.png'
     // Place the image in the /public/images/ folder
-    img: null,
+    img: '/turret.png',
     thumbs: [
       { label: 'MECH CAD', img: null },
       { label: 'CIRCUIT',  img: null },
@@ -148,7 +148,7 @@ export const personal = {
   callsign: 'KE2DWI',
   email: 'KitsonJFLau@gmail.com',
   github: 'https://github.com/taskdire',
-  linkedin: '#',
+  linkedin: 'https://www.linkedin.com/in/kitson-lau-aa2a47384/?skipRedirect=true',
   stats: [
     { val: '4+', key: 'Projects' },
     { val: '2', key: 'Internship' },
