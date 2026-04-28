@@ -18,9 +18,9 @@ export const projects = [
     // this is for the buttons images not the actual image switch 
     img: '/turret.png',
     thumbs: [
-      { label: 'MECH CAD', img: null },
-      { label: 'CIRCUIT',  img: null },
-      { label: 'DEMO',     img: null },
+      { label: 'MECH CAD', img: '/turret.png' },
+      { label: 'CIRCUIT',  img: '/images/turret_circuit.png' },
+      { label: 'DEMO',     img: '/images/turret_demo.png' },
     ],
     desc: `Designed a fully autonomous targeting system using <strong>Autodesk Inventor</strong>
            for mechanical CAD and <strong>Arduino C++</strong> for real-time servo control.

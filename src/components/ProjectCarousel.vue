@@ -38,14 +38,18 @@
 
         <!-- 3D model preview / image area -->
         <div class="model-box">
-          <!-- Real image if provided; set img: '/images/yourfile.png' in data/index.js -->
           <img
-            v-if="current.img"
+            v-if="current.thumbs && current.thumbs[selectedThumbIdx] && current.thumbs[selectedThumbIdx].img"
+            :src="current.thumbs[selectedThumbIdx].img"
+            class="model-img"
+            :alt="current.thumbs[selectedThumbIdx].label"
+          />
+          <img
+            v-else-if="current.img"
             :src="current.img"
             class="model-img"
             :alt="current.title"
           />
-          <!-- Fallback: animated wireframe cube -->
           <svg v-else class="cube" width="54" height="54" viewBox="0 0 60 60" fill="none">
             <polygon points="30,4 55,17 30,30 5,17"
               :stroke="current.color" stroke-width="1.3" fill="rgba(99,102,241,0.09)"/>
@@ -64,10 +68,11 @@
             v-for="(thumb, ti) in current.thumbs"
             :key="ti"
             class="proj-thumb"
-            :class="{ 'active-thumb': ti === 0 }"
+            :class="{ 'active-thumb': ti === selectedThumbIdx }"
+            @click="selectedThumbIdx = ti"
+            style="cursor:pointer;"
           >
-            <img v-if="thumb.img" :src="thumb.img" :alt="thumb.label"/>
-            <span v-else>{{ thumb.label }}</span>
+            <span>{{ thumb.label }}</span>
           </div>
         </div>
 
@@ -82,21 +87,22 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { projects } from '../data/index.js'
 
 // ── Carousel state ───────────────────────────────────────────
 const idx = ref(0)
-const selectedThumb = ref(null)  // For modal
+const selectedThumbIdx = ref(0)
 
 // Computed shorthand so template stays clean
 const current = computed(() => projects[idx.value])
 
+// Reset selected thumb when project changes
+watch(idx, () => { selectedThumbIdx.value = 0 })
+
 const next = () => { if (idx.value < projects.length - 1) idx.value++ }
 const prev = () => { if (idx.value > 0) idx.value-- }
 const goTo = (i) => { idx.value = i }
-const openThumb = (thumb) => { selectedThumb.value = thumb }
-const closeThumb = () => { selectedThumb.value = null }
 </script>
 
 <style scoped>
