@@ -15,6 +15,7 @@ export const projects = [
     cta: 'View 3D Model',
     // To use a real photo: img: '/images/turret.png'
     // Place the image in the /public/images/ folder
+    // this is for the buttons images not the actual image switch 
     img: '/turret.png',
     thumbs: [
       { label: 'MECH CAD', img: null },
