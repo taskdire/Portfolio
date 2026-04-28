@@ -170,7 +170,7 @@ const goTo = (i) => { idx.value = i }
   overflow: hidden;
   margin-bottom: 0.6rem;
   flex-shrink: 0;
-  min-height: 95px;
+  min-height: 200px;
 }
 .model-box::before {
   content: '';
@@ -188,7 +188,7 @@ const goTo = (i) => { idx.value = i }
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: inherit;
   opacity: 0.85;
 }
