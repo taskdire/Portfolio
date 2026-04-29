@@ -22,11 +22,11 @@ export const projects = [
       { label: 'CIRCUIT',  img: 'turret_circuit.png' },
       { label: 'DEMO',     img: 'turret_demo.mp4', video: true },
     ],
-    desc: `Designed a fully autonomous targeting system using <strong>Autodesk Inventor</strong>
-           for mechanical CAD and <strong>Arduino C++</strong> for real-time servo control.
+    desc: `Designed a fully autonomous targeting system using Autodesk Inventor
+           for mechanical CAD and Arduino C++ for real-time servo control.
            Integrated computer-vision target acquisition with a closed-loop
-           <strong>PID controller</strong> maintaining aim accuracy within ±0.5°.
-           All gears, brackets, and pan-tilt mounts were custom-machined to specification. Contributors: Darren Lam`,
+          PID controller maintaining aim accuracy within ±0.5°.
+           All gears, brackets, and pan-tilt mounts were custom-machined to specification. <strong>Contributors: Darren Lam</strong>`,
   },
   {
     title: 'PID Line-Following Robot',
