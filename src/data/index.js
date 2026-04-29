@@ -29,7 +29,7 @@ export const projects = [
            All gears, brackets, and pan-tilt mounts were custom-machined to specification. <strong>Contributors: Darren Lam</strong>`,
   },
   {
-    title: 'PID Line-Following Robot',
+    title: 'V8 Internal Reciprocating Assembly',
     stack: 'C++  ·  Arduino  ·  Sensor Fusion  ·  CAD',
     modelLabel: 'SCHEMATIC VIEW',
     color: '#6ee7b7',
@@ -37,30 +37,15 @@ export const projects = [
     cta: 'View Schematics',
     img: null,
     thumbs: [
-      { label: 'CHASSIS', img: null },
-      { label: 'SENSORS', img: null },
+      { label: 'MECH CAD', img: 'v8.png' },
+      { label: 'DEMO',     img: 'v8_demo.mp4', video: true },
     ],
-    desc: `Built a high-speed differential-drive robot using an array of <strong>IR sensors</strong>
-           feeding into a tuned <strong>PID loop</strong> for smooth, jitter-free line following.
-           Achieved lap times 40% faster than proportional-only control.
-           Custom 3D-printed chassis optimized for weight distribution and sensor clearance.`,
+    desc: `Engineered a high-fidelity V8 Internal Reciprocating Assembly using Autodesk Inventor to study core mechanical synchronization.
+Developed a parametric 45° cylinder block housing a dynamic rotating assembly, including a precision-constrained crankshaft and connecting rod system.
+Optimized internal geometry to ensure zero-interference motion and accurate piston travel through the full 360° cycle.
+Focused on the technical conversion of linear reciprocating force into rotational torque as a foundational study in high-performance engine architecture.`,
   },
-  {
-    title: 'HAM Radio Repeater Network',
-    stack: 'RF Engineering  ·  Python  ·  Raspberry Pi  ·  FCC',
-    modelLabel: 'RF TOPOLOGY',
-    color: '#fbbf24',
-    color2: '#f59e0b',
-    cta: 'View Documentation',
-    img: null,
-    thumbs: [
-      { label: 'RF MAP', img: null },
-      { label: 'PYTHON', img: null },
-    ],
-    desc: `Designed and licensed a two-meter <strong>amateur radio repeater</strong>
-           serving the Staten Island area. Built a <strong>Python-based</strong> controller
-           on Raspberry Pi for DTMF decoding, ID beaconing, and remote diagnostics.`,
-  },
+
 ]
 
 // ── Experience (used by ExperienceCard.vue) ─────────────────
