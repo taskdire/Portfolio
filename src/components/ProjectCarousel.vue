@@ -36,10 +36,19 @@
     <transition name="slide" mode="out-in">
       <div class="proj-slide" :key="idx">
 
-        <!-- 3D model preview / image area -->
+        <!-- 3D model preview / image / video area -->
         <div class="model-box">
+          <video
+            v-if="current.thumbs && current.thumbs[selectedThumbIdx] && current.thumbs[selectedThumbIdx].video"
+            :src="current.thumbs[selectedThumbIdx].img"
+            class="model-img"
+            controls
+            autoplay
+            loop
+            muted
+          ></video>
           <img
-            v-if="current.thumbs && current.thumbs[selectedThumbIdx] && current.thumbs[selectedThumbIdx].img"
+            v-else-if="current.thumbs && current.thumbs[selectedThumbIdx] && current.thumbs[selectedThumbIdx].img"
             :src="current.thumbs[selectedThumbIdx].img"
             class="model-img"
             :alt="current.thumbs[selectedThumbIdx].label"
